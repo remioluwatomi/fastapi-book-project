@@ -8,7 +8,8 @@ from api.db.schemas import Book, Genre, InMemoryDB
 router = APIRouter()
 
 db = InMemoryDB()
-# test_cd_workflow 
+
+# test_changes_for cd workflow
 db.books = {
     1: Book(
         id=1,
@@ -31,6 +32,13 @@ db.books = {
         publication_year=1955,
         genre=Genre.FANTASY,
     ),
+    4: Book(
+        id=3,
+        title="Great Gatsby",
+        author="F. Scott Fitzgerald",
+        publication_year=1925,
+        genre=Genre.THRILLER,
+    ),
 }
 
 
@@ -48,8 +56,7 @@ async def create_book(book: Book):
 async def get_books() -> OrderedDict[int, Book]:
     return db.get_books()
 
-# comment to test ci-workflow 
-# comment to test ci-workflow 
+
 @router.get(
     "/{book_id}", response_model=Book, status_code=status.HTTP_200_OK
 )
