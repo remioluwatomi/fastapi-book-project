@@ -25,10 +25,11 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -i ~/.ssh/book_project_key -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
+          ssh -i ~/.ssh/book_project_key -o StrictHostKeyChecking=no      $SSH_USER@$SSH_HOST << 'EOF'
             cd /home/ubuntu/fastapi-book-project
             git fetch origin main
             git reset --hard origin/main
             source venv/bin/activate
             pip install -r requirements.txt
             sudo systemctl restart fastapi
+          EOF
