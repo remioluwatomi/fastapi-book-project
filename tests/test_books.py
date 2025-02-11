@@ -54,5 +54,5 @@ def test_delete_book():
 
 def test_get_nonexistent_book():
     response = client.get("/books/999")
-    assert response.status_code == 200
+    assert response.status_code == 404
     assert response.json() == {"detail": "Book not found"}
