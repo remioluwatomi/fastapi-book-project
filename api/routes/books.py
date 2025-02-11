@@ -9,7 +9,6 @@ router = APIRouter()
 
 db = InMemoryDB()
 
-# test_changes_for cd workflow
 # test_changes_for cd workflow - test
 db.books = {
     1: Book(
