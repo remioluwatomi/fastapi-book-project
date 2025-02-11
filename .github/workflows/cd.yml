@@ -14,22 +14,26 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/book_project_key
+          chmod 600 ~/.ssh/book_project_key
+          echo "Host ec2-instance\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+      - name: Deploy to EC2
+
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_KEY" > ~/.ssh/book_project_key
-          chmod 600 ~/.ssh/book_project_key
 
-      - name: Deploy to EC2
         run: |
-          ssh -i ~/.ssh/book_project_key -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
+          ssh -i ~/.ssh/book_project_key $SSH_USER@$SSH_HOST << 'EOF'
             cd /home/ubuntu/fastapi-book-project
-            git fetch origin main
-            git reset --hard origin/main
+            git pull --rebase origin main
+            python3 -m venv venv
             source venv/bin/activate
+            pip install --upgrade pip
             pip install -r requirements.txt
             sudo systemctl restart fastapi
           EOF
