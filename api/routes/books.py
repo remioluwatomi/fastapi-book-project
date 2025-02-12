@@ -8,7 +8,6 @@ from api.db.schemas import Book, Genre, InMemoryDB
 router = APIRouter()
 
 db = InMemoryDB()
-# comment to test workflow
 db.books = {
     1: Book(
         id=1,
