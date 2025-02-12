@@ -8,8 +8,6 @@ from api.db.schemas import Book, Genre, InMemoryDB
 router = APIRouter()
 
 db = InMemoryDB()
-
-# test_changes_for cd workflow - test --testing 
 db.books = {
     1: Book(
         id=1,
@@ -31,13 +29,6 @@ db.books = {
         author="J.R.R. Tolkien",
         publication_year=1955,
         genre=Genre.FANTASY,
-    ),
-    4: Book(
-        id=3,
-        title="Great Gatsby",
-        author="F. Scott Fitzgerald",
-        publication_year=1925,
-        genre=Genre.THRILLER,
     ),
 }
 
