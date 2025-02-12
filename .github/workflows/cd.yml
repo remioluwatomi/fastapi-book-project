@@ -17,8 +17,8 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
 
       - name: Deploy to EC2
         env:
@@ -26,9 +26,9 @@ jobs:
           SSH_HOST: ${{ secrets.SSH_HOST }}
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/book_project_key
+          echo "${{ secrets.SSH_KEY }}" | tr -d '\r' > ~/.ssh/book_project_key
           chmod 600 ~/.ssh/book_project_key
-          ssh -i ~/.ssh/book_project_key $SSH_USER@$SSH_HOST << 'EOF'
+          ssh -i ~/.ssh/book_project_key -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
             cd /home/ubuntu/fastapi-book-project
             git pull --rebase origin main
             python3 -m venv venv
